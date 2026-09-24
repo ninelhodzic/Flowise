@@ -34,10 +34,8 @@ COPY . .
 RUN pnpm install && \
     pnpm build:docker
 
-# Give the node user ownership of the application files
-RUN chown -R node:node .
-
-# Switch to non-root user (node user already exists in node:20-alpine)
+# Run the application as the non-root node user. Installed files only need
+# read access; runtime data belongs in the mounted /home/node/.flowise volume.
 USER node
 
 EXPOSE 3000
